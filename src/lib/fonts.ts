@@ -8,8 +8,3 @@ export const nunito = Nunito_Sans({
 
 
 export const fontVariables = [nunito.variable].join(" ");
-
-export const fontOptions = [
-    { label: "Nunito Sans", value: "font-nunito" },
-
-];

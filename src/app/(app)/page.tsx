@@ -1,6 +1,5 @@
-
+import { LoginForm } from "@/components";
 import { Metadata } from "next";
-import { Galery, Hero } from "@/components";
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
@@ -11,10 +10,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Page() {
     return (
-        
-        <div className="flex min-h-[calc(100vh-86px)] flex-col w-full items-center justify-start overflow-hidden max-w-[1920px]">
-            <Hero />
-            <Galery />
+        <div className="flex min-h-[calc(100vh-86px)] w-full max-w-[1920px] flex-col items-center justify-start overflow-hidden">
+            <LoginForm />
         </div>
     );
 }

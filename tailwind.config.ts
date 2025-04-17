@@ -43,6 +43,7 @@ const config = {
                 secondary: "#262626",
                 placeholder: "#d9d9d9",
                 white: "#ffffff",
+                gray: "#C5C1C2",
 
                 success: "#00975C",
                 error: "#bd0a0a",

@@ -14,7 +14,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     return (
         <html>
             <body
-                className={`${fontVariables} flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-primary`}
+                className={`${fontVariables} flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-primary font-nunito`}
             >
                 <SuspenseProvider>
                     {children}
