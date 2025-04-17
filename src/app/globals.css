@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+html,
+body {
+    scroll-behavior: smooth !important;
+}
+
+
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-40px);
+    }
+}
+
+.animate-bounce-custom {
+    animation: bounce 2s infinite ease-in-out;
+}
+
+
+
+@layer base {}
