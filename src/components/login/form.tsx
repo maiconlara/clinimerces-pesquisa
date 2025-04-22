@@ -1,44 +1,92 @@
 "use client";
 
-import Image from "next/image";
-import { logo } from "@/assets/images";
-import { Button, Input } from "@/components";
-import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-
+import { Button, Input, SubmitButton, useToast } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@/utils/hooks/useAuth";
 import { useForm } from "react-hook-form";
+import { logo } from "@/assets/images";
 import { loginSchema } from "@/utils";
+import { AxiosError } from "axios";
+import Image from "next/image";
+import { z } from "zod";
+import api from "@/lib/api";
 
 type Form = z.infer<typeof loginSchema>;
 
 export const LoginForm = () => {
+    const { toast } = useToast();
+
+    const { login } = useAuth();
+
+    const HandleLoginRequest = async (postData: Form) => {
+        const { data } = await api.post("/login", postData);
+        return data;
+    };
+
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: HandleLoginRequest,
+        onSuccess: (data) => {
+            login(data)
+            toast({
+                duration: 4000,
+                className: "bg-success text-white",
+                title: "Sucesso",
+                description: "Teste de login, nao irá redirecionar",
+            });
+        },
+        onError: (error: AxiosError) => {
+            const { response } = error;
+            if (!response) {
+                toast({
+                    duration: 4000,
+                    className: "bg-error",
+                    variant: "destructive",
+                    title: "Erro no login!",
+                    description:
+                        "Não se preocupe, o erro foi do nosso lado. Já fomos notificados e iremos trabalhar para corrigir.",
+                });
+                return;
+            }
+
+            toast({
+                duration: 4000,
+                className: "bg-error",
+                variant: "destructive",
+                title: "Pipi",
+                description: "Popopo",
+            });
+        },
+    });
+
     const form = useForm<Form>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            "not-email": "",
-            "not-password": "",
+            email: "",
+            password: "",
         },
     });
 
     function onSubmit(data: Form) {
-        alert(data["not-email"]);
+        mutate(data);
     }
 
     return (
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                id="contact-form"
+                id="login-form"
                 autoComplete="nope"
-                className="flex h-full min-h-[calc(100vh-86px)] w-full max-w-[86vw] md:max-w-[426px] flex-col items-center justify-center gap-10"
+                className="flex h-full min-h-[calc(100vh-86px)] w-full max-w-[86vw] flex-col items-center justify-center gap-10 md:max-w-[426px]"
             >
                 <Image height={500} width={500} src={logo} className="h-auto w-[288px]" alt="Clinimercês" />
                 <h1 className="cursor-default text-3xl font-bold text-white">Seja bem-vindo</h1>
                 <div className="flex w-full flex-col gap-4 text-white">
                     <FormField
                         control={form.control}
-                        name="not-email"
+                        name="email"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
@@ -50,7 +98,7 @@ export const LoginForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="not-password"
+                        name="password"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
@@ -67,9 +115,17 @@ export const LoginForm = () => {
                         )}
                     />
 
-                    <Button type="submit" variant="default">
+                    {/* <Button type="submit" variant="default">
+                    </Button> */}
+                    <SubmitButton form="login-form" isLoading={isPending}>
                         Entrar
-                    </Button>
+                    </SubmitButton>
+
+                    <div className="flex w-full flex-row justify-end">
+                        <p className="cursor-pointer text-base text-white transition-colors hover:text-white/70">
+                            Esqueci minha senha
+                        </p>
+                    </div>
                 </div>
             </form>
         </Form>

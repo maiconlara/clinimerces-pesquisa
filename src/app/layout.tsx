@@ -1,6 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { fontVariables } from "@/lib/fonts";
+import { Toaster } from "@/components";
+import { Providers } from "./providers";
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
@@ -20,11 +22,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <meta name="msapplication-TileColor" content="#937cd4" />
                 <meta name="theme-color" content="#ffffff" />
             </head>
-            <body
-                className={`${fontVariables} flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-primary font-nunito`}
-            >
+            <Providers>
+                <body
+                    className={`${fontVariables} flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-primary font-nunito`}
+                >
                     {children}
-            </body>
+                    <Toaster />
+                </body>
+            </Providers>
         </html>
     );
 }

@@ -12,15 +12,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html>
-            <body
-                className={`${fontVariables} flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-primary font-nunito`}
-            >
+        // <html>
+        //     <body
+        //         className={`${fontVariables} flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-primary font-nunito`}
+        //     >
                 <SuspenseProvider>
                     {children}
                     <Footer />
                 </SuspenseProvider>
-            </body>
-        </html>
+            /* </body>
+        </html> */
     );
 }
