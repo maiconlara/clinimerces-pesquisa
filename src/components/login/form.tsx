@@ -1,7 +1,7 @@
 "use client";
 
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Button, Input, SubmitButton, useToast } from "@/components";
+import { Button, Input, PasswordInput, SubmitButton, useToast } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/utils/hooks/useAuth";
@@ -12,12 +12,13 @@ import { AxiosError } from "axios";
 import Image from "next/image";
 import { z } from "zod";
 import api from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 type Form = z.infer<typeof loginSchema>;
 
 export const LoginForm = () => {
     const { toast } = useToast();
-
+    const { push } = useRouter();
     const { login } = useAuth();
 
     const HandleLoginRequest = async (postData: Form) => {
@@ -36,6 +37,7 @@ export const LoginForm = () => {
                 title: "Sucesso",
                 description: "Teste de login, nao irá redirecionar",
             });
+            push("/home")
         },
         onError: (error: AxiosError) => {
             const { response } = error;
@@ -50,14 +52,16 @@ export const LoginForm = () => {
                 });
                 return;
             }
-
-            toast({
-                duration: 4000,
-                className: "bg-error",
-                variant: "destructive",
-                title: "Pipi",
-                description: "Popopo",
-            });
+            if(response.status === 401) {
+                
+                toast({
+                    duration: 4000,
+                    className: "bg-error",
+                    variant: "destructive",
+                    title: "Credenciais Inválidas",
+                    description: "Não encontramos esse usuário cadastrado no sistema. Tente Novamente.",
+                });
+            }
         },
     });
 
@@ -82,7 +86,7 @@ export const LoginForm = () => {
                 className="flex h-full min-h-[calc(100vh-86px)] w-full max-w-[86vw] flex-col items-center justify-center gap-10 md:max-w-[426px]"
             >
                 <Image height={500} width={500} src={logo} className="h-auto w-[288px]" alt="Clinimercês" />
-                <h1 className="cursor-default text-3xl font-bold text-white">Seja bem-vindo</h1>
+                <h1 className="cursor-default text-3xl font-bold text-green-strong dark:text-white">Seja bem-vindo</h1>
                 <div className="flex w-full flex-col gap-4 text-white">
                     <FormField
                         control={form.control}
@@ -102,7 +106,7 @@ export const LoginForm = () => {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input
+                                    <PasswordInput
                                         {...field}
                                         autoComplete="off"
                                         type="password"
@@ -122,7 +126,7 @@ export const LoginForm = () => {
                     </SubmitButton>
 
                     <div className="flex w-full flex-row justify-end">
-                        <p className="cursor-pointer text-base text-white transition-colors hover:text-white/70">
+                        <p className="cursor-pointer text-base text-secondary hover:text-secondary/80 dark:text-white transition-colors dark:hover:text-white/70">
                             Esqueci minha senha
                         </p>
                     </div>

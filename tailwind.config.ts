@@ -50,8 +50,9 @@ const config = {
                 lines: "#00000026",
                 green: {
                     light: "#00a64c",
-                    medium: "#00531f",
-                    strong: "#013318",
+                    medium: "#008545",
+                    strong: "#00531f",
+                    dark: "#013318",
                 },
             },
             backgroundImage: {},

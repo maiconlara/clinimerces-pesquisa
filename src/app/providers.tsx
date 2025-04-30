@@ -1,9 +1,8 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { ThemeProvider } from "@/providers/theme-provider";
 import { AuthContextProvider } from "@/contexts/auth";
-
 import { ReactNode } from "react";
 interface ProvidersProps {
     children: ReactNode;
@@ -23,8 +22,10 @@ const queryClient = new QueryClient({
 
 export const Providers = ({ children }: ProvidersProps) => {
     return (
-        <QueryClientProvider client={queryClient}>
-            <AuthContextProvider>{children}</AuthContextProvider>
-        </QueryClientProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <QueryClientProvider client={queryClient}>
+                <AuthContextProvider>{children}</AuthContextProvider>
+            </QueryClientProvider>
+        </ThemeProvider>
     );
 };

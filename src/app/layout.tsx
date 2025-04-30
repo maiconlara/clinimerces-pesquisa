@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html>
+        <html suppressHydrationWarning={true}>
             <head>
                 <link rel="shortcut icon" href="/favicon.ico" />
                 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -22,14 +22,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <meta name="msapplication-TileColor" content="#937cd4" />
                 <meta name="theme-color" content="#ffffff" />
             </head>
-            <Providers>
-                <body
-                    className={`${fontVariables} flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-primary font-nunito`}
-                >
+            <body
+                className={`${fontVariables} flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-white font-nunito dark:bg-primary`}
+            >
+                <Providers>
                     {children}
                     <Toaster />
-                </body>
-            </Providers>
+                </Providers>
+            </body>
         </html>
     );
 }

@@ -18,7 +18,7 @@ export const SuspenseAnimation = ({ children, showChildren }: SuspenseAnimationP
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="flex w-full flex-col"
+                    className="flex w-full flex-col items-center justify-start overflow-hidden"
                 >
                     {children}
                 </motion.div>
