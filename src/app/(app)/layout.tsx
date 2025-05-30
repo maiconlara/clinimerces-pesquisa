@@ -3,6 +3,8 @@ import "../globals.css";
 import type { Metadata } from "next";
 import { fontVariables } from "@/lib/fonts";
 import { SuspenseProvider } from "../suspense-provider";
+import { Navbar } from "@/components/ui/navbar";
+import { cookies } from "next/headers";
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
@@ -11,16 +13,16 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+
+    const cookieStore = cookies();
+    const token = cookieStore.get("clinimerces_user_session")?.value;
+    console.log("TOKEN DO COOKIE:", token);
     return (
-        // <html>
-        //     <body
-        //         className={`${fontVariables} flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-primary font-nunito`}
-        //     >
-                <SuspenseProvider>
-                    {children}
-                    <Footer />
-                </SuspenseProvider>
-            /* </body>
-        </html> */
+
+        <SuspenseProvider>
+            {token && (<Navbar />)}
+            {children}
+            <Footer />
+        </SuspenseProvider>
     );
 }

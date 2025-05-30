@@ -5,6 +5,7 @@ import useCookie from "@/utils/hooks/useCookies";
 import { User } from "@/types/user";
 import api from "@/lib/api";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 interface UserSession {
     token: string;
@@ -29,11 +30,13 @@ type AuthContextProviderProps = {
 export const AuthContext = createContext<AuthContextData | null>(null);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
+    const { push } = useRouter();
+
     const [userSession, setUserSession] = useState<UserSession | null>(null);
     const [user, setUser] = useState<User | null>(null);
     const { getCookie, removeCookie, setCookie } = useCookie();
     //Belogic@2025ClM3
-    console.log(user);
+    // console.log(user);
 
     const getUserSession = async (): Promise<User | null | undefined> => {
         const token = getCookie("clinimerces_user_session");
@@ -60,6 +63,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
                 .then((user) => {
                     if (user) {
                         setUser(user);
+                        push("/home")
                     }
                 })
                 .catch((error) => {
